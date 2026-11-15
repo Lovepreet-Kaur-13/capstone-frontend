@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Products from "./products/Products";
 import Error404 from "./Error404";
+import Account from "./auth/Account";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<Error404 />} />
+        <Route path="/account/profile" element={<Account />} />
       </Route>
     </Routes>
   );
