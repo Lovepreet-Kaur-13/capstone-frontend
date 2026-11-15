@@ -1,23 +1,29 @@
 import { useParams } from "react-router";
-import { getProducts } from "../api/products";
+import { getProduct } from "../api/products";
 import { useAuth } from "../auth/AuthContext";
 import { useEffect, useState } from "react";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { token } = useAuth();
-  //const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null);
+
+  const syncProduct = async (id) => {
+    try {
+      const data = await getProduct(id);
+      console.log(data);
+      setProduct(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getProducts(id)
-      .then(setProduct)
-      .catch((e) => setError(e.message));
+    syncProduct(id);
   }, [id]);
 
-  if (!product) return error ? <p role="alert">{error}</p> : <p>Loading...</p>;
+  if (!product) return <p>Loading...</p>;
 
   return (
     <article className="product">
@@ -28,7 +34,6 @@ export default function ProductDetails() {
       <p>{product.stock}</p>
       <p>{product.quantity}</p>
       {token ? <button>Add to Cart</button> : <p></p>}
-      {error && <p role="alert">{error}</p>}
     </article>
   );
 }
