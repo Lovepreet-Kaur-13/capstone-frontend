@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../api/products";
+import ProductsList from "./ProductsList";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,11 +20,8 @@ export default function Products() {
 
   return (
     <>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>{product.title}</li>
-        ))}
-      </ul>
+      <h1>Products</h1>
+      <ProductsList products={products} />
     </>
   );
 }
