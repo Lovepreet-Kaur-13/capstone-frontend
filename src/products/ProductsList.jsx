@@ -6,7 +6,7 @@ export default function ProductsList({ products }) {
         <li key={product.id}>
           <figure>
             <img
-              src={product.img}
+              src={product.image_url}
               alt={`Image of ${product.title}`}
               width={100}
             />
@@ -17,7 +17,7 @@ export default function ProductsList({ products }) {
             </h2>
             <p> {product.price}</p>
             <button>Add to Cart</button>
-          </section>                                                                                                                                                                                                                        
+          </section>
         </li>
       ))}
     </ul>
