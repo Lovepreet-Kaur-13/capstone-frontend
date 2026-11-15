@@ -12,3 +12,11 @@ export async function getProducts() {
     return [];
   }
 }
+
+/** Fetches a single book by its ID. */
+export async function getProduct(id) {
+  const response = await fetch(API + "/products/" + id);
+  const result = await response.json();
+  if (!response.ok) throw Error(result.message);
+  return result;
+}

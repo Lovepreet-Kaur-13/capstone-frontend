@@ -5,6 +5,7 @@ import Register from "./auth/Register";
 import Products from "./products/Products";
 import Error404 from "./Error404";
 import Account from "./auth/Account";
+import ProductDetails from "./products/ProductDetails";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Products />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<Error404 />} />
