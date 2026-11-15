@@ -27,12 +27,17 @@ export default function ProductDetails() {
 
   return (
     <article className="product">
-      <h1>{product.title}</h1>
-      <p>{product.price}</p>
-      <p>{product.image_url}</p>
-      <p>{product.description}</p>
-      <p>{product.stock}</p>
-      <p>{product.quantity}</p>
+      <figure>
+        <img src={product.image_url} alt={`image of ${product.title}`} />
+      </figure>
+      <section>
+        <h1>{product.title}</h1>
+        <p>{product.price}</p>
+        <p>{product.description}</p>
+        <p>{product.stock}</p>
+        <p>{product.quantity}</p>
+      </section>
+
       {token ? <button>Add to Cart</button> : <p></p>}
     </article>
   );
