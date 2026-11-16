@@ -1,28 +1,17 @@
-import CartItem from "./CartItem";
-import { useCart } from "./CartContext";
-
-export default function Cart() {
-  const { cart, addToCart, removeFromCart } = useCart();
-
+export default function CartItem({ item, addToCart, removeFromCart }) {
   return (
-    <section className="cart">
-      <h2>Cart</h2>
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <>
-          <ul>
-            {cart.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
-              />
-            ))}
-          </ul>
-        </>
-      )}
-    </section>
+    <li>
+      <figure>
+        <img src={item.image_url} alt={`Image of ${item.title}`} width={100} />
+      </figure>
+      <section>
+        <h2>{item.title}</h2>
+        <p>{item.price}</p>
+        <p>Quantity: {item.quantity}</p>
+
+        <button onClick={() => removeFromCart(item)}>-</button>
+        <button onClick={() => addToCart(item)}>+</button>
+      </section>
+    </li>
   );
 }
