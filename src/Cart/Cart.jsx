@@ -1,24 +1,25 @@
 import CartItem from "./CartItem";
+import { useCart } from "./CartContext";
 
-export default function Cart({ cart, removeFromCart, addToCart }) {
+export default function Cart() {
+  const { cart = [], addToCart, removeFromCart } = useCart();
+
   return (
     <section className="cart">
       <h2>Cart</h2>
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        <>
-          <ul>
-            {cart.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
-              />
-            ))}
-          </ul>
-        </>
+        <ul>
+          {cart.map((item) => (
+            <CartItem
+              key={item.id}
+              item={item}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          ))}
+        </ul>
       )}
     </section>
   );
