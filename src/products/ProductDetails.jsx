@@ -2,10 +2,12 @@ import { useParams } from "react-router";
 import { getProduct } from "../api/products";
 import { useAuth } from "../auth/AuthContext";
 import { useEffect, useState } from "react";
+import { useCart } from "../Cart/CartContext";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { token } = useAuth();
+  const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
 
@@ -38,7 +40,7 @@ export default function ProductDetails() {
         <p>{product.quantity}</p>
       </section>
 
-      {token ? <button>Add to Cart</button> : <p></p>}
+      {token && <button onClick={() => addToCart(product)}>Add to Cart</button>}
     </article>
   );
 }
