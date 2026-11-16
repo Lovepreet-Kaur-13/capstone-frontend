@@ -17,8 +17,8 @@ export default function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Error404 />} />
         <Route path="/account/profile" element={<Account />} />
+        <Route path="*" element={<Error404 />} />
         <Route path="/admin" element={<Admin />} />
       </Route>
     </Routes>
