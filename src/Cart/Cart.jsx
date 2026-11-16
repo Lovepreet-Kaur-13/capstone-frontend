@@ -2,7 +2,7 @@ import CartItem from "./CartItem";
 import { useCart } from "./CartContext";
 
 export default function Cart() {
-  const { cart = [], addToCart, removeFromCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
 
   return (
     <section className="cart">
