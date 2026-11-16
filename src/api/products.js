@@ -20,3 +20,16 @@ export async function getProduct(id) {
   if (!response.ok) throw Error(result.message);
   return result;
 }
+/** Creates a new product. Requires an admin token. */
+export async function createProduct(token, product) {
+  const response = await fetch(API + "/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(product),
+  });
+  if (!response.ok) throw Error(await response.text());
+  return await response.json();
+}

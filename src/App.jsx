@@ -6,6 +6,7 @@ import Products from "./products/Products";
 import Error404 from "./Error404";
 import Account from "./auth/Account";
 import ProductDetails from "./products/ProductDetails";
+import Admin from "./admin/admin";
 
 export default function App() {
   return (
@@ -16,8 +17,9 @@ export default function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Error404 />} />
         <Route path="/account/profile" element={<Account />} />
+        <Route path="*" element={<Error404 />} />
+        <Route path="/admin" element={<Admin />} />
       </Route>
     </Routes>
   );
