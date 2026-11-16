@@ -26,6 +26,7 @@ export default function Products() {
     (product) =>
       regex.test(product.title) ||
       regex.test(product.brand) ||
+      regex.test(product.color) ||
       regex.test(product.category),
   );
 
