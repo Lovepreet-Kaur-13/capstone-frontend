@@ -1,17 +1,28 @@
-import CartItemQuantity from "./CartItemQuantity";
+import CartItem from "./CartItem";
+import { useCart } from "./CartContext";
 
-export default function CartItem({ item, removeFromCart, addToCart }) {
+export default function Cart() {
+  const { cart, addToCart, removeFromCart } = useCart();
+
   return (
-    <li className="cart-item">
-      <div>
-        <img src={item.image_url} alt={item.title} width={40} />
-        {item.title}
-      </div>
-      <CartItemQuantity
-        item={item}
-        removeFromCart={removeFromCart}
-        addToCart={addToCart}
-      />
-    </li>
+    <section className="cart">
+      <h2>Cart</h2>
+      {cart.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          <ul>
+            {cart.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
   );
 }
