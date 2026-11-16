@@ -1,3 +1,5 @@
+import CartItem from "./CartItem";
+
 export default function Cart({ cart, removeFromCart, addToCart }) {
   return (
     <section className="cart">
