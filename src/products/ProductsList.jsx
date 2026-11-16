@@ -1,5 +1,11 @@
 import { Link } from "react-router";
+import { useAuth } from "../auth/AuthContext";
+import { useCart } from "../Cart/CartContext";
+
 export default function ProductsList({ products }) {
+  const { addToCart } = useCart();
+  const { token } = useAuth();
+
   return (
     <ul>
       {products.map((product) => (
@@ -16,7 +22,9 @@ export default function ProductsList({ products }) {
               <Link to={`/products/${product.id}`}> {product.title}</Link>
             </h2>
             <p> {product.price}</p>
-            <button>Add to Cart</button>
+            {token && (
+              <button onClick={() => addToCart(product)}>Add to Cart</button>
+            )}
           </section>
         </li>
       ))}
