@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 export default function ProductsList({ products }) {
   return (
-    <ul>
+    <ul className="products">
       {products.map((product) => (
         <li key={product.id}>
           <figure>
