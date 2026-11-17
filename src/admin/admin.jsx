@@ -50,6 +50,8 @@ export default function Admin() {
       description: formData.get("description"),
       category: formData.get("category"),
       brand: formData.get("brand"),
+      color: formData.get("color"),
+      size: formData.get("size"),
       imageUrl: formData.get("imageUrl"),
       price: Number(formData.get("price")),
       stockQuantity: Number(formData.get("stockQuantity")),
@@ -130,6 +132,14 @@ export default function Admin() {
           <input type="text" name="brand" required />
         </label>
         <label>
+          color
+          <input type="text" name="color" required />
+        </label>
+        <label>
+          size
+          <input type="text" name="size" required />
+        </label>
+        <label>
           Image URL
           <input type="url" name="imageUrl" />
         </label>
@@ -186,7 +196,13 @@ export default function Admin() {
         </label>
         <label>
           Quantity
-          <input type="number" name="quantity" min="1" defaultValue="1" required />
+          <input
+            type="number"
+            name="quantity"
+            min="1"
+            defaultValue="1"
+            required
+          />
         </label>
         <label>
           Date
