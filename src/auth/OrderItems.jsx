@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProductsByOrderId } from "../api/orders";
 
-export default function OrderItems({ orderId, token }) {
+export default function OrderItems({ orderId, token, setOrderId }) {
   const [products, setProducts] = useState([]);
 
   const syncProducts = async (orderId, token) => {
@@ -33,6 +33,7 @@ export default function OrderItems({ orderId, token }) {
           ))}
         </ul>
       )}
+      <button onClick={() => setOrderId(null)}>Clear Order Details</button>
     </>
   );
 }

@@ -1,4 +1,15 @@
-export default function OrderList({ orders }) {
+import { useState } from "react";
+import OrderItems from "./OrderItems";
+
+export default function OrderList({ orders, token }) {
+  const [orderId, setOrderId] = useState(null);
+
+  if (orderId) {
+    return (
+      <OrderItems orderId={orderId} token={token} setOrderId={setOrderId} />
+    );
+  }
+
   return (
     <>
       <h2>My Orders</h2>
@@ -12,7 +23,9 @@ export default function OrderList({ orders }) {
               <p>Order #{order.id}</p>
               <p>Total: ${order.total}</p>
 
-              <button>Order Details</button>
+              <button onClick={() => setOrderId(order.id)}>
+                Order Details
+              </button>
             </li>
           ))}
         </ul>
