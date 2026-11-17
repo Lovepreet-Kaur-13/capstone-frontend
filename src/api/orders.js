@@ -49,3 +49,41 @@ export async function getProductsByOrderId(orderId, token) {
     return [];
   }
 }
+
+
+/** Fetches the logged-in user's orders */
+export async function getOrders(token) {
+  const response = await fetch(API + "/orders", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) throw Error(await response.text());
+  return await response.json();
+}
+
+/** Creates a new order for the logged-in user */
+export async function createOrder(token, order) {
+  const response = await fetch(API + "/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(order),
+  });
+  if (!response.ok) throw Error(await response.text());
+  return await response.json();
+}
+
+/** Adds a product to an existing order */
+export async function addProductToOrder(token, orderId, productId, quantity) {
+  const response = await fetch(API + `/orders/${orderId}/products`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ productId, quantity }),
+  });
+  if (!response.ok) throw Error(await response.text());
+  return await response.json();
+}
