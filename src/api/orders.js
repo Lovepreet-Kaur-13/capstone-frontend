@@ -49,7 +49,7 @@ export async function getProductsByOrderId(orderId, token) {
     return [];
   }
 }
-const API = import.meta.env.VITE_API;
+
 
 /** Fetches the logged-in user's orders */
 export async function getOrders(token) {
