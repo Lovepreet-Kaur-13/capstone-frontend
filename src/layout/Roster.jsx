@@ -3,6 +3,7 @@ export default function Roster({
   selectedCategory,
   setSelectedCategory,
 }) {
+  //DFS algorithm
   // Store the count for each category
   const categoryCounts = {};
   // Store category names for rendering
@@ -23,6 +24,15 @@ export default function Roster({
   return (
     <nav className="roster">
       <ul>
+        <li
+          className={
+            "category" + (selectedCategory === null ? " selected" : "")
+          }
+          onClick={() => setSelectedCategory(null)}
+        >
+          All Products ({products.length})
+        </li>
+
         {categories.map((category) => (
           <li
             key={category}
