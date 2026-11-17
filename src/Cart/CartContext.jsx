@@ -33,7 +33,6 @@ export function CartProvider({ children }) {
 
     // Store cart items in state
     setCart(result.items);
-
     // Store order total in state
     setTotal(result.total);
   };
