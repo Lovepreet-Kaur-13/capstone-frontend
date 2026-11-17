@@ -1,7 +1,12 @@
 import { Link } from "react-router";
+
+import { useCart } from "../Cart/CartContext";
+
 export default function ProductsList({ products }) {
+  const { addToCart } = useCart();
+
   return (
-    <ul>
+    <ul className="products">
       {products.map((product) => (
         <li key={product.id}>
           <figure>
@@ -16,7 +21,8 @@ export default function ProductsList({ products }) {
               <Link to={`/products/${product.id}`}> {product.title}</Link>
             </h2>
             <p> {product.price}</p>
-            <button>Add to Cart</button>
+
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
           </section>
         </li>
       ))}
