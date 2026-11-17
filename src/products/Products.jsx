@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../api/products";
 import ProductsList from "./ProductsList";
 import Roster from "../layout/Roster";
+import Cart from "../Cart/Cart";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -62,6 +63,8 @@ export default function Products() {
       </form>
 
       <ProductsList products={filteredProducts} />
+
+      <Cart />
     </>
   );
 }
