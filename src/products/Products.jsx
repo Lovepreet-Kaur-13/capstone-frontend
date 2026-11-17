@@ -6,7 +6,6 @@ import Cart from "../Cart/Cart";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-
   const [searchProduct, setSearchProduct] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
