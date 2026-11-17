@@ -26,12 +26,14 @@ export default function Navbar() {
       </NavLink>
       <nav>
         <>
-          <NavLink to="/account/profile">Account</NavLink>
           <NavLink to="/products">Products</NavLink>
           {user?.is_admin && <NavLink to="/admin">Admin</NavLink>}
         </>
         {token ? (
-          <button onClick={logout}>Log out</button>
+          <>
+            <NavLink to="/account/profile">Account</NavLink>
+            <button onClick={logout}>Log out</button>
+          </>
         ) : (
           <NavLink to="/login">Log in</NavLink>
         )}

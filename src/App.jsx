@@ -7,6 +7,7 @@ import Error404 from "./Error404";
 import Account from "./auth/Account";
 import ProductDetails from "./products/ProductDetails";
 import Admin from "./admin/admin";
+import Cart from "./Cart/Cart";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route index element={<Products />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/account/profile" element={<Account />} />
