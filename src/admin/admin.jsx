@@ -162,7 +162,11 @@ export default function Admin() {
           <tr>
             <th>ID</th>
             <th>Title</th>
+            <th>Description</th>
             <th>Category</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Size</th>
             <th>Price</th>
             <th>Stock</th>
           </tr>
@@ -174,7 +178,10 @@ export default function Admin() {
               <td>
                 <Link to={`/products/${product.id}`}>{product.title}</Link>
               </td>
+              <td>{product.description}</td>
               <td>{product.category}</td>
+              <td>{product.brand}</td>
+              <td>{product.size}</td>
               <td>${product.price}</td>
               <td>{product.stock_quantity}</td>
             </tr>
