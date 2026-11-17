@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router";
+import { Navigate } from "react-router";
 import { getUser } from "../api/users";
 import { createProduct, getProducts } from "../api/products";
 import { addProductToOrder, createOrder, getOrders } from "../api/orders";
@@ -165,8 +165,9 @@ export default function Admin() {
             <th>Description</th>
             <th>Category</th>
             <th>Brand</th>
-            <th>Color</th>
+            <th>Image</th>
             <th>Size</th>
+            <th>Color</th>
             <th>Price</th>
             <th>Stock</th>
           </tr>
@@ -174,63 +175,20 @@ export default function Admin() {
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>
-                <Link to={`/products/${product.id}`}>{product.title}</Link>
-              </td>
+              <td>{product.title}</td>
               <td>{product.description}</td>
               <td>{product.category}</td>
               <td>{product.brand}</td>
               <td>{product.size}</td>
+              <td>
+                <img src={product.image_url} />
+              </td>
               <td>${product.price}</td>
               <td>{product.stock_quantity}</td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      <h2>Add an order</h2>
-      <form action={onCreateOrder}>
-        <label>
-          Product
-          <select name="productId" required>
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.title} (${product.price})
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Quantity
-          <input
-            type="number"
-            name="quantity"
-            min="1"
-            defaultValue="1"
-            required
-          />
-        </label>
-        <label>
-          Date
-          <input type="date" name="date" defaultValue={today} required />
-        </label>
-        <label>
-          Shipping address
-          <input type="text" name="shippingAddress" required />
-        </label>
-        <label>
-          Discount code
-          <input type="text" name="discountCode" />
-        </label>
-        <label>
-          <input type="checkbox" name="completed" />
-          Completed
-        </label>
-        <button>Add order</button>
-        {orderMessage && <output>{orderMessage}</output>}
-        {orderError && <output>{orderError}</output>}
-      </form>
 
       <h2>Orders ({orders.length})</h2>
       <table>
