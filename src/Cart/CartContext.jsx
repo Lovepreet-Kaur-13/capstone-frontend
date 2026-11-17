@@ -19,18 +19,15 @@ export function CartProvider({ children }) {
       setTotal(0);
       return;
     }
-
     // Request the user's active cart
     const response = await fetch(API + "/orders/cart", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
     // Expected response:
     // { items: [...], total: 123.45 }
     const result = await response.json();
-
     // Store cart items in state
     setCart(result.items);
     // Store order total in state
@@ -59,7 +56,6 @@ export function CartProvider({ children }) {
         productId: product.id,
       }),
     });
-
     // Reload cart so React state matches database state
     await loadCart();
   };
@@ -68,7 +64,6 @@ export function CartProvider({ children }) {
   const removeFromCart = async (product) => {
     // Prevent requests from guests
     if (!token) return;
-
     // Decrease quantity in the database
     await fetch(API + `/orders/cart/${product.id}`, {
       method: "DELETE",
@@ -76,11 +71,22 @@ export function CartProvider({ children }) {
         Authorization: `Bearer ${token}`,
       },
     });
-
     // Reload cart so React state matches database state
     await loadCart();
   };
+  //complete order
+  const completeOrder = async () => {
+    if (!token) return;
 
+    await fetch(API + "/orders/cart/complete", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    await loadCart();
+  };
   return (
     <CartContext.Provider
       value={{
@@ -94,6 +100,8 @@ export function CartProvider({ children }) {
         removeFromCart,
         // Manually refresh cart
         loadCart,
+        //complete cart order
+        completeOrder,
       }}
     >
       {children}

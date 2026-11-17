@@ -7,9 +7,8 @@ export default function CartItem({ item, addToCart, removeFromCart }) {
       <section>
         <h2>{item.title}</h2>
         <p>{item.price}</p>
-        <p>Quantity: {item.quantity}</p>
-
         <button onClick={() => removeFromCart(item)}>-</button>
+        <p>Quantity: {item.quantity}</p>
         <button onClick={() => addToCart(item)}>+</button>
       </section>
     </li>
