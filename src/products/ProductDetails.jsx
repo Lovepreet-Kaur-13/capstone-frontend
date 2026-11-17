@@ -3,7 +3,6 @@ import { getProduct } from "../api/products";
 
 import { useEffect, useState } from "react";
 import { useCart } from "../Cart/CartContext";
-import Cart from "../Cart/Cart";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -42,8 +41,6 @@ export default function ProductDetails() {
       </section>
 
       <button onClick={() => addToCart(product)}>Add to Cart</button>
-
-      <Cart />
     </article>
   );
 }
