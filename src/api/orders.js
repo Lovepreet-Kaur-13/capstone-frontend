@@ -33,3 +33,19 @@ export async function getOrderByOrderId(orderId, token) {
     return [];
   }
 }
+
+/* Fetch products list by orderId */
+export async function getProductsByOrderId(orderId, token) {
+  try {
+    const response = await fetch(API + "/orders/" + orderId + "/products", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
