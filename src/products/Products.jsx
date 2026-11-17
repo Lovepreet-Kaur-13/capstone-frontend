@@ -6,7 +6,6 @@ import Cart from "../Cart/Cart";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-
   const [searchProduct, setSearchProduct] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -45,22 +44,23 @@ export default function Products() {
 
   return (
     <>
+      <section>
+        <h1>Products</h1>
+
+        <form action={tryFilteredProduct}>
+          <input
+            type="text"
+            name="productName"
+            placeholder="Search for a Product..."
+          />
+          <button type="submit">Search</button>
+        </form>
+      </section>
       <Roster
         products={products}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-
-      <h1>Products</h1>
-
-      <form action={tryFilteredProduct}>
-        <input
-          type="text"
-          name="productName"
-          placeholder="Search for a Product..."
-        />
-        <button type="submit">Search</button>
-      </form>
 
       <ProductsList products={filteredProducts} />
 
