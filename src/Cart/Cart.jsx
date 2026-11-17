@@ -1,6 +1,9 @@
 import CartItem from "./CartItem";
+import { useCart } from "./CartContext";
 
-export default function Cart({ cart, removeFromCart, addToCart }) {
+export default function Cart() {
+  const { cart, total, addToCart, removeFromCart, completeOrder } = useCart();
+
   return (
     <section className="cart">
       <h2>Cart</h2>
@@ -18,6 +21,9 @@ export default function Cart({ cart, removeFromCart, addToCart }) {
               />
             ))}
           </ul>
+          <h3>Total: ${Number(total).toFixed(2)}</h3>
+
+          <button onClick={completeOrder}>Complete Order</button>
         </>
       )}
     </section>

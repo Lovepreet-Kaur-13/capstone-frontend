@@ -1,17 +1,16 @@
-import CartItemQuantity from "./CartItemQuantity";
-
-export default function CartItem({ item, removeFromCart, addToCart }) {
+export default function CartItem({ item, addToCart, removeFromCart }) {
   return (
-    <li className="cart-item">
-      <div>
-        <img src={item.image_url} alt={item.title} width={40} />
-        {item.title}
-      </div>
-      <CartItemQuantity
-        item={item}
-        removeFromCart={removeFromCart}
-        addToCart={addToCart}
-      />
+    <li>
+      <figure>
+        <img src={item.image_url} alt={`Image of ${item.title}`} width={65} />
+      </figure>
+      <section>
+        <h2>{item.title}</h2>
+        <p>${item.price}</p>
+        <button onClick={() => removeFromCart(item)}>-</button>
+        <p>Quantity: {item.quantity}</p>
+        <button onClick={() => addToCart(item)}>+</button>
+      </section>
     </li>
   );
 }
