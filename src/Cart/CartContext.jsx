@@ -33,7 +33,6 @@ export function CartProvider({ children }) {
     // Store order total in state
     setTotal(result.total);
   };
-
   // Load the cart when the user logs in,
   // logs out, or when the token changes
   useEffect(() => {
@@ -44,7 +43,6 @@ export function CartProvider({ children }) {
   const addToCart = async (product) => {
     // Prevent requests from guests
     if (!token) return;
-
     // Create or update the cart item in the database
     await fetch(API + "/orders/cart", {
       method: "POST",
@@ -74,10 +72,10 @@ export function CartProvider({ children }) {
     // Reload cart so React state matches database state
     await loadCart();
   };
+
   //complete order
   const completeOrder = async () => {
     if (!token) return;
-
     await fetch(API + "/orders/cart/complete", {
       method: "PATCH",
       headers: {
@@ -90,17 +88,11 @@ export function CartProvider({ children }) {
   return (
     <CartContext.Provider
       value={{
-        // Current cart items
         cart,
-        // Current order total
         total,
-        // Increase quantity / add item
         addToCart,
-        // Decrease quantity / remove item
         removeFromCart,
-        // Manually refresh cart
         loadCart,
-        //complete cart order
         completeOrder,
       }}
     >

@@ -3,6 +3,7 @@ import { getProduct } from "../api/products";
 
 import { useEffect, useState } from "react";
 import { useCart } from "../Cart/CartContext";
+import Cart from "../Cart/Cart";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -28,19 +29,21 @@ export default function ProductDetails() {
   if (!product) return <p>Loading...</p>;
 
   return (
-    <article className="product">
-      <figure>
-        <img src={product.image_url} alt={`image of ${product.title}`} />
-      </figure>
-      <section>
-        <h1>{product.title}</h1>
-        <p>{product.price}</p>
-        <p>{product.description}</p>
-        <p>{product.stock}</p>
-        <p>{product.quantity}</p>
-      </section>
+    <>
+      <article className="product">
+        <figure>
+          <img src={product.image_url} alt={`image of ${product.title}`} />
+        </figure>
+        <section>
+          <h1>{product.title}</h1>
+          <p>${product.price}</p>
+          <p>{product.description}</p>
+          <p>{product.stock_quantity}</p>
+        </section>
 
-      <button onClick={() => addToCart(product)}>Add to Cart</button>
-    </article>
+        <button onClick={() => addToCart(product)}>Add to Cart</button>
+      </article>
+      <Cart />
+    </>
   );
 }
