@@ -16,3 +16,20 @@ export async function getOrdersByUserId(token) {
     return [];
   }
 }
+
+/* Fetch specific order by orderId */
+export async function getOrderByOrderId(orderId, token) {
+  try {
+    const response = await fetch(API + "/orders/" + orderId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
