@@ -58,7 +58,7 @@ export default function AdminOrders() {
             <th>Discount</th>
             <th>Total</th>
             <th>Completed</th>
-            <th>Canceled</th>
+
             <th>Actions</th>
           </tr>
         </thead>
@@ -70,8 +70,7 @@ export default function AdminOrders() {
               <td>{order.shipping_address}</td>
               <td>{order.discount_code ?? "-"}</td>
               <td>${Number(order.total).toFixed(2)}</td>
-              <td>{order.completed ? "Yes" : "No"}</td>
-              <td>{isCanceled(order) ? "Yes" : "No"}</td>
+              <td>{order.completed ? "Yes" : "pending"}</td>
               <td>
                 <button
                   onClick={() => onDeleteOrder(order)}
