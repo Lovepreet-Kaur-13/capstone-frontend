@@ -2,28 +2,36 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import { getUser } from "../api/users";
 import { createProduct, getProducts } from "../api/products";
-import { addProductToOrder, createOrder, getOrders } from "../api/orders";
+import { getOrders } from "../api/orders";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Admin() {
   const { token } = useAuth();
   const [user, setUser] = useState(null);
+  const [userError, setUserError] = useState(null);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
 
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   const [orderError, setOrderError] = useState(null);
-  const [orderMessage, setOrderMessage] = useState(null);
 
   const syncUser = async (token) => {
-    const data = await getUser(token);
-    setUser(data);
+    try {
+      const data = await getUser(token);
+      setUser(data);
+    } catch (e) {
+      setUserError(e.message);
+    }
   };
 
   const syncProducts = async () => {
-    const data = await getProducts();
-    setProducts(data);
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   const syncOrders = async (token) => {
@@ -65,48 +73,17 @@ export default function Admin() {
     }
   };
 
-  const onCreateOrder = async (formData) => {
-    setOrderError(null);
-    setOrderMessage(null);
-
-    const productId = Number(formData.get("productId"));
-    const quantity = Number(formData.get("quantity"));
-    const product = products.find((p) => p.id === productId);
-    if (!product) {
-      setOrderError("Please choose a product.");
-      return;
-    }
-
-    const order = {
-      date: formData.get("date"),
-      shippingAddress: formData.get("shippingAddress"),
-      discountCode: formData.get("discountCode") || null,
-      total: Number((Number(product.price) * quantity).toFixed(2)),
-      completed: formData.get("completed") === "on",
-    };
-
-    try {
-      // Step 1: create the order
-      const created = await createOrder(token, order);
-      // Step 2: add the product to it
-      await addProductToOrder(token, created.id, productId, quantity);
-      setOrderMessage(`Created order #${created.id}`);
-      syncOrders(token);
-    } catch (e) {
-      setOrderError(e.message);
-    }
-  };
-
   // Not logged in → send to login
   if (!token) return <Navigate to="/login" replace />;
+
+  // Couldn't load the user
+  if (userError) return <p>Could not load your account: {userError}</p>;
 
   // Logged in, user still loading
   if (!user) return <p>Loading...</p>;
 
   // Logged in but not an admin → send home
   if (!user.is_admin) return <Navigate to="/" replace />;
-
-  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <>
@@ -132,11 +109,11 @@ export default function Admin() {
           <input type="text" name="brand" required />
         </label>
         <label>
-          color
+          Color
           <input type="text" name="color" required />
         </label>
         <label>
-          size
+          Size
           <input type="text" name="size" required />
         </label>
         <label>
@@ -175,15 +152,21 @@ export default function Admin() {
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
+              <td>{product.id}</td>
               <td>{product.title}</td>
               <td>{product.description}</td>
               <td>{product.category}</td>
               <td>{product.brand}</td>
-              <td>{product.size}</td>
               <td>
-                <img src={product.image_url} />
+                {product.image_url ? (
+                  <img src={product.image_url} alt={product.title} width="60" />
+                ) : (
+                  "-"
+                )}
               </td>
-              <td>${product.price}</td>
+              <td>{product.size}</td>
+              <td>{product.color}</td>
+              <td>${Number(product.price).toFixed(2)}</td>
               <td>{product.stock_quantity}</td>
             </tr>
           ))}
@@ -191,6 +174,7 @@ export default function Admin() {
       </table>
 
       <h2>Orders ({orders.length})</h2>
+      {orderError && <p>Could not load orders: {orderError}</p>}
       <table>
         <thead>
           <tr>
@@ -209,7 +193,7 @@ export default function Admin() {
               <td>{new Date(order.date).toLocaleDateString()}</td>
               <td>{order.shipping_address}</td>
               <td>{order.discount_code ?? "-"}</td>
-              <td>${order.total}</td>
+              <td>${Number(order.total).toFixed(2)}</td>
               <td>{order.completed ? "Yes" : "No"}</td>
             </tr>
           ))}
