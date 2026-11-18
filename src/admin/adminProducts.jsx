@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { createProduct, getProducts } from "../api/products";
+import { useAuth } from "../auth/AuthContext";
 
-export default function AdminProducts({ token }) {
+export default function AdminProducts() {
+  const { token } = useAuth();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);

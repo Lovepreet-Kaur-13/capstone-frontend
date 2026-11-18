@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getOrders } from "../api/orders";
+import { useAuth } from "../auth/AuthContext";
 
-export default function AdminOrders({ token }) {
+export default function AdminOrders() {
+  const { token } = useAuth();
   const [orders, setOrders] = useState([]);
   const [orderError, setOrderError] = useState(null);
 

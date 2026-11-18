@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router";
+import { Navigate, NavLink, Outlet } from "react-router";
 import { getUser } from "../api/users";
 import { useAuth } from "../auth/AuthContext";
-import AdminProducts from "./adminProducts";
-import AdminOrders from "./adminOrders";
 
 export default function Admin() {
   const { token } = useAuth();
@@ -40,8 +38,15 @@ export default function Admin() {
       <h1>Admin Dashboard</h1>
       <p>Signed in as {user.username}</p>
 
-      <AdminProducts token={token} />
-      <AdminOrders token={token} />
+      <nav>
+        <NavLink to="/admin" end>
+          Products
+        </NavLink>{" "}
+        | <NavLink to="/admin/orders">Orders</NavLink>
+      </nav>
+
+      {/* The current admin page (products or orders) renders here */}
+      <Outlet />
     </>
   );
 }
