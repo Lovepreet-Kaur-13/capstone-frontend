@@ -31,6 +31,8 @@ export default function Navbar() {
         </>
         {token ? (
           <>
+            {/* changed this line */}
+            <NavLink to="/cart">Cart</NavLink>
             <NavLink to="/account/profile">Account</NavLink>
             <button onClick={logout}>Log out</button>
           </>
