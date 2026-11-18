@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { deleteOrder, getAllOrders } from "../api/orders";
 import { useAuth } from "../auth/AuthContext";
 
-const isCanceled = (order) => order.canceled === true;
 
 export default function AdminOrders() {
   const { token } = useAuth();
