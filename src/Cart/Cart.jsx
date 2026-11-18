@@ -1,15 +1,14 @@
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import CartItem from "./CartItem";
 import { useCart } from "./CartContext";
 
 export default function Cart() {
-  const { cart, total, updateQuantity, removeFromCart, completeOrder } =
-    useCart();
+  const { cart, total, updateQuantity, removeFromCart } = useCart();
 
   if (!cart) {
     return <p>Loading cart...</p>;
   }
-
+  const isCheckout = location.pathname === "/checkout";
   const items = cart.items || [];
 
   return (
@@ -32,12 +31,11 @@ export default function Cart() {
           </ul>
 
           <h3>Total: ${Number(total).toFixed(2)}</h3>
-          {/* <button onClick={completeOrder}>Complete Order</button>*/}
           {/* Go to checkout page */}
           {!isCheckout && (
-            <button onClick={() => navigate("/checkout")}>
+            <Link className="" to="/checkout">
               Complete Order
-            </button>
+            </Link>
           )}
         </>
       )}
