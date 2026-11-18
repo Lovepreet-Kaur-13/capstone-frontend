@@ -3,30 +3,34 @@ import CartItem from "./CartItem";
 import { useCart } from "./CartContext";
 
 export default function Cart() {
-  const navigate = useNavigate();
+  const { cart, total, updateQuantity, removeFromCart, completeOrder } =
+    useCart();
 
-  const { cart, total, addToCart, removeFromCart } = useCart();
+  if (!cart) {
+    return <p>Loading cart...</p>;
+  }
 
-  // true when viewing /checkout
-  const isCheckout = location.pathname === "/checkout";
+  const items = cart.items || [];
 
   return (
     <section className="cart">
       <h2>Cart</h2>
-      {cart.length === 0 ? (
+
+      {items.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
           <ul>
-            {cart.map((item) => (
+            {items.map((item) => (
               <CartItem
                 key={item.id}
                 item={item}
-                addToCart={addToCart}
+                updateQuantity={updateQuantity}
                 removeFromCart={removeFromCart}
               />
             ))}
           </ul>
+
           <h3>Total: ${Number(total).toFixed(2)}</h3>
           {/* <button onClick={completeOrder}>Complete Order</button>*/}
           {/* Go to checkout page */}

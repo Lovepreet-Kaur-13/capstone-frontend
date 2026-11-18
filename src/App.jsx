@@ -7,6 +7,8 @@ import Error404 from "./Error404";
 import Account from "./auth/Account";
 import ProductDetails from "./products/ProductDetails";
 import Admin from "./admin/admin";
+import AdminProducts from "./admin/adminProducts";
+import AdminOrders from "./admin/adminOrders";
 import Cart from "./Cart/Cart";
 import Checkout from "./Cart/Checkout";
 
@@ -22,7 +24,10 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/account/profile" element={<Account />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+        </Route>
         <Route path="*" element={<Error404 />} />
       </Route>
     </Routes>
