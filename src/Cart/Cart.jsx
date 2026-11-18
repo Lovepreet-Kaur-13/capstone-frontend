@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router";
 import CartItem from "./CartItem";
 import { useCart } from "./CartContext";
 
 export default function Cart() {
-  const { cart, total, addToCart, removeFromCart, completeOrder } = useCart();
+  const navigate = useNavigate();
+
+  const { cart, total, addToCart, removeFromCart } = useCart();
 
   return (
     <section className="cart">
@@ -23,7 +26,9 @@ export default function Cart() {
           </ul>
           <h3>Total: ${Number(total).toFixed(2)}</h3>
 
-          <button onClick={completeOrder}>Complete Order</button>
+          {/* <button onClick={completeOrder}>Complete Order</button>*/}
+          {/* Go to checkout page */}
+          <button onClick={() => navigate("/checkout")}>Complete Order</button>
         </>
       )}
     </section>
