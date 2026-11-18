@@ -7,6 +7,9 @@ export default function Cart() {
 
   const { cart, total, addToCart, removeFromCart } = useCart();
 
+  // true when viewing /checkout
+  const isCheckout = location.pathname === "/checkout";
+
   return (
     <section className="cart">
       <h2>Cart</h2>
@@ -25,10 +28,13 @@ export default function Cart() {
             ))}
           </ul>
           <h3>Total: ${Number(total).toFixed(2)}</h3>
-
           {/* <button onClick={completeOrder}>Complete Order</button>*/}
           {/* Go to checkout page */}
-          <button onClick={() => navigate("/checkout")}>Complete Order</button>
+          {!isCheckout && (
+            <button onClick={() => navigate("/checkout")}>
+              Complete Order
+            </button>
+          )}
         </>
       )}
     </section>
