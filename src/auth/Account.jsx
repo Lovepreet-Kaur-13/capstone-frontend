@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUser } from "../api/users";
 import { useAuth } from "./AuthContext";
 import { getOrdersByUserId } from "../api/orders";
-import OrderList from "./ordersList";
+import OrderList from "../orders/OrdersList";
 
 export default function Accounts() {
   const { token } = useAuth();
