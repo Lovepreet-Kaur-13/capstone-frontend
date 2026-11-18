@@ -10,6 +10,7 @@ import Admin from "./admin/admin";
 import AdminProducts from "./admin/adminProducts";
 import AdminOrders from "./admin/adminOrders";
 import Cart from "./Cart/Cart";
+import Checkout from "./Cart/Checkout";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/account/profile" element={<Account />} />
