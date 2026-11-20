@@ -4,6 +4,9 @@ import OrderItems from "./OrderItems";
 export default function OrderList({ orders, token }) {
   const [orderId, setOrderId] = useState(null);
 
+  // Only finished orders; the open cart isn't an order yet
+  const completedOrders = orders.filter((order) => order.completed);
+
   if (orderId) {
     return (
       <OrderItems orderId={orderId} token={token} setOrderId={setOrderId} />
@@ -11,10 +14,10 @@ export default function OrderList({ orders, token }) {
   }
 
   return (
-    <>
+    <section>
       <h2>My Orders</h2>
 
-      {orders.length === 0 ? (
+      {completedOrders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
         <table>
@@ -26,7 +29,7 @@ export default function OrderList({ orders, token }) {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {completedOrders.map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>${(order.total_cents / 100).toFixed(2)}</td>
@@ -40,6 +43,6 @@ export default function OrderList({ orders, token }) {
           </tbody>
         </table>
       )}
-    </>
+    </section>
   );
 }
