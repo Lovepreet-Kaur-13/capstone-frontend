@@ -4,6 +4,9 @@ import OrderItems from "./OrderItems";
 export default function OrderList({ orders, token }) {
   const [orderId, setOrderId] = useState(null);
 
+  // Only finished orders; the open cart isn't an order yet
+  const completedOrders = orders.filter((order) => order.completed);
+
   if (orderId) {
     return (
       <OrderItems orderId={orderId} token={token} setOrderId={setOrderId} />
@@ -11,25 +14,35 @@ export default function OrderList({ orders, token }) {
   }
 
   return (
-    <>
+    <section>
       <h2>My Orders</h2>
 
-      {orders.length === 0 ? (
+      {completedOrders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>
-              <p>Order #{order.id}</p>
-              <p>Total: ${order.total}</p>
-
-              <button onClick={() => setOrderId(order.id)}>
-                Order Details
-              </button>
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Total</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedOrders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>${(order.total_cents / 100).toFixed(2)}</td>
+                <td>
+                  <button onClick={() => setOrderId(order.id)}>
+                    Order Details
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
-    </>
+    </section>
   );
 }

@@ -4,68 +4,45 @@ import Cart from "./Cart";
 import Payments from "./Payments";
 
 export default function Checkout() {
-  // Cart state and checkout logic from context
   const { total, completeOrder } = useCart();
 
-  // Success, error, and completion state
-  const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-  const [orderComplete, setOrderComplete] = useState(false);
+  // Saved before checkout, because the cart resets to $0 afterwards
+  const [paidTotal, setPaidTotal] = useState(null);
 
   // Handles checkout form submission
   const placeOrder = async (formData) => {
-    setMessage(null);
     setError(null);
 
+    const cardNumber = formData.get("cardNumber");
+    const cvv = formData.get("cvv");
+
+    if (cardNumber.length < 16) {
+      setError("Card number must contain at least 16 digits.");
+      return;
+    }
+
+    if (cvv.length < 3) {
+      setError("Please enter a valid CVV.");
+      return;
+    }
+
     try {
-      const shippingAddress = formData.get("shippingAddress");
-      const discountCode = formData.get("discountCode");
-      const paymentMethod = formData.get("paymentMethod");
-      const cardType = formData.get("cardType");
-      const cardholderName = formData.get("cardholderName");
-      const cardNumber = formData.get("cardNumber");
-      const expirationDate = formData.get("expirationDate");
-      const cvv = formData.get("cvv");
-
-      if (cardNumber.length < 16) {
-        setError("Card number must contain at least 16 digits.");
-        return;
-      }
-
-      if (cvv.length < 3) {
-        setError("Please enter a valid CVV.");
-        return;
-      }
-
-      console.log({
-        shippingAddress,
-        discountCode,
-        paymentMethod,
-        cardType,
-        cardholderName,
-        cardNumber,
-        expirationDate,
-        cvv,
-      });
-
+      const orderTotal = total;
       await completeOrder();
-
-      setOrderComplete(true);
+      setPaidTotal(orderTotal);
     } catch (err) {
       setError(err.message);
     }
   };
 
-  if (orderComplete) {
+  if (paidTotal !== null) {
     return (
       <section className="thank-you">
         <h1>Thank You For Your Order!</h1>
-
         <p>Your payment has been processed successfully.</p>
-
         <p>Your order is now being prepared.</p>
-
-        <h3>Total Paid: ${Number(total).toFixed(2)}</h3>
+        <h3>Total Paid: ${(paidTotal / 100).toFixed(2)}</h3>
       </section>
     );
   }
@@ -89,11 +66,9 @@ export default function Checkout() {
 
             <Payments />
 
-            <h3>Order Total: ${Number(total).toFixed(2)}</h3>
+            <h3>Order Total: ${(total / 100).toFixed(2)}</h3>
 
             <button type="submit">Place Order</button>
-
-            {message && <p className="success">{message}</p>}
 
             {error && <p className="error">{error}</p>}
           </form>

@@ -30,7 +30,7 @@ export default function Cart() {
             ))}
           </ul>
 
-          <h3>Total: ${Number(total).toFixed(2)}</h3>
+          <h3>Total: ${(total / 100).toFixed(2)}</h3>
           {/* Go to checkout page */}
           {!isCheckout && (
             <Link className="" to="/checkout">

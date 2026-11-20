@@ -34,7 +34,7 @@ export function CartProvider({ children }) {
     const result = await response.json();
 
     setCart(result);
-    setTotal(result.total || 0);
+    setTotal(result.total_cents || 0); // cents
   };
 
   useEffect(() => {
