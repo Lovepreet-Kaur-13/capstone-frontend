@@ -2,13 +2,10 @@ import { useEffect, useState } from "react";
 import { deleteOrder, getAllOrders } from "../api/orders";
 import { useAuth } from "../auth/AuthContext";
 
-
 export default function AdminOrders() {
   const { token } = useAuth();
   const [orders, setOrders] = useState([]);
   const [orderError, setOrderError] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [deletingId, setDeletingId] = useState(null);
 
   const syncOrders = async () => {
     try {
@@ -24,29 +21,19 @@ export default function AdminOrders() {
     syncOrders();
   }, [token]);
 
-  const onDeleteOrder = async (order) => {
-    if (!window.confirm(`Delete order #${order.id}? This can't be undone.`)) {
-      return;
-    }
-
-    setOrderError(null);
-    setMessage(null);
-    setDeletingId(order.id);
+  const onDeleteOrder = async (id) => {
     try {
-      await deleteOrder(token, order.id);
-      setOrders((current) => current.filter((o) => o.id !== order.id));
-      setMessage(`Deleted order #${order.id}`);
+      await deleteOrder(token, id);
+      setOrders((current) => current.filter((order) => order.id !== id));
+      alert(`Deleted order #${id}`);
     } catch (e) {
       setOrderError(e.message);
-    } finally {
-      setDeletingId(null);
     }
   };
 
   return (
     <>
       <h2>Orders ({orders.length})</h2>
-      {message && <p>{message}</p>}
       {orderError && <p>{orderError}</p>}
       <table>
         <thead>
@@ -57,7 +44,6 @@ export default function AdminOrders() {
             <th>Discount</th>
             <th>Total</th>
             <th>Completed</th>
-
             <th>Actions</th>
           </tr>
         </thead>
@@ -68,15 +54,10 @@ export default function AdminOrders() {
               <td>{new Date(order.date).toLocaleDateString()}</td>
               <td>{order.shipping_address}</td>
               <td>{order.discount_code ?? "-"}</td>
-              <td>${Number(order.total).toFixed(2)}</td>
+              <td>${(order.total_cents / 100).toFixed(2)}</td>
               <td>{order.completed ? "Yes" : "pending"}</td>
               <td>
-                <button
-                  onClick={() => onDeleteOrder(order)}
-                  disabled={deletingId === order.id}
-                >
-                  {deletingId === order.id ? "Deleting..." : "Delete"}
-                </button>
+                <button onClick={() => onDeleteOrder(order.id)}>Delete</button>
               </td>
             </tr>
           ))}

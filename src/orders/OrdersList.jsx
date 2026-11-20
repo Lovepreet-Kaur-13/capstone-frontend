@@ -21,7 +21,7 @@ export default function OrderList({ orders, token }) {
           {orders.map((order) => (
             <li key={order.id}>
               <p>Order #{order.id}</p>
-              <p>Total: ${order.total}</p>
+              <p>Total: ${(order.total_cents / 100).toFixed(2)}</p>
 
               <button onClick={() => setOrderId(order.id)}>
                 Order Details
