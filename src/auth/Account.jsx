@@ -34,7 +34,9 @@ export default function Accounts() {
 
   return (
     <>
-      <h1>{user.username} profile</h1>
+      <h1>
+        {user.first_name} {user.last_name}
+      </h1>
       <h2>{user.username}</h2>
       <p>{user.email}</p>
       <OrderList orders={orders} token={token} />
