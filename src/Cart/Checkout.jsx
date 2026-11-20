@@ -65,7 +65,7 @@ export default function Checkout() {
 
         <p>Your order is now being prepared.</p>
 
-        <h3>Total Paid: ${Number(total).toFixed(2)}</h3>
+        <h3>Total Paid: ${(total / 100).toFixed(2)}</h3>
       </section>
     );
   }
@@ -89,7 +89,7 @@ export default function Checkout() {
 
             <Payments />
 
-            <h3>Order Total: ${Number(total).toFixed(2)}</h3>
+            <h3>Order Total: ${(total / 100).toFixed(2)}</h3>
 
             <button type="submit">Place Order</button>
 
