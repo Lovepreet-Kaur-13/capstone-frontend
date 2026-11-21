@@ -1,27 +1,7 @@
 export default function Payments() {
   return (
     <>
-      <fieldset>
-        <legend>Payment Method</legend>
-
-        <label>
-          <input
-            type="radio"
-            name="paymentMethod"
-            value="credit"
-            defaultChecked
-            required
-          />
-          Credit Card
-        </label>
-
-        <label>
-          <input type="radio" name="paymentMethod" value="paypal" />
-          PayPal
-        </label>
-      </fieldset>
-
-      <h3>Payment Information</h3>
+      <h2>Payment Method</h2>
 
       <label>
         Card Type
@@ -48,39 +28,35 @@ export default function Payments() {
         <input
           type="text"
           name="cardNumber"
-          defaultValue="4242424242424242"
-          maxLength="19"
+          defaultValue="4444-2222-8888-4242"
+          maxLength={19}
           required
         />
       </label>
 
-      <div className="card-row">
-        <label>
-          Expiration Date
-          <input
-            type="text"
-            name="expirationDate"
-            defaultValue="12/30"
-            maxLength="5"
-            required
-          />
-        </label>
+      <label>
+        Expiration Date
+        <input
+          type="text"
+          name="expirationDate"
+          defaultValue="12/30"
+          maxLength={5}
+          required
+        />
+      </label>
 
-        <label>
-          CVV
-          <input
-            type="password"
-            name="cvv"
-            defaultValue="123"
-            maxLength="4"
-            required
-          />
-        </label>
-      </div>
+      <label>
+        CVV
+        <input
+          type="password"
+          name="cvv"
+          defaultValue="123"
+          maxLength={4}
+          required
+        />
+      </label>
 
-      <p className="demo-notice">
-        Demo checkout only. No payment information is stored.
-      </p>
+      <p>Demo checkout only. No payment information is stored.</p>
     </>
   );
 }

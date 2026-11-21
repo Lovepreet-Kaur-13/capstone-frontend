@@ -30,7 +30,7 @@ export default function ProductDetails() {
 
   return (
     <>
-      <article className="product">
+      <article>
         <figure>
           <img src={product.image_url} alt={`image of ${product.title}`} />
         </figure>

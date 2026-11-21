@@ -7,30 +7,17 @@ export default function Checkout() {
   const { total, completeOrder } = useCart();
 
   const [error, setError] = useState(null);
+
   // Saved before checkout, because the cart resets to $0 afterwards
   const [paidTotal, setPaidTotal] = useState(null);
 
   // Handles checkout form submission
-  const placeOrder = async (formData) => {
+  const placeOrder = async () => {
     setError(null);
 
-    const cardNumber = formData.get("cardNumber");
-    const cvv = formData.get("cvv");
-
-    if (cardNumber.length < 16) {
-      setError("Card number must contain at least 16 digits.");
-      return;
-    }
-
-    if (cvv.length < 3) {
-      setError("Please enter a valid CVV.");
-      return;
-    }
-
     try {
-      const orderTotal = total;
+      setPaidTotal(total);
       await completeOrder();
-      setPaidTotal(orderTotal);
     } catch (err) {
       setError(err.message);
     }
@@ -38,7 +25,7 @@ export default function Checkout() {
 
   if (paidTotal !== null) {
     return (
-      <section className="thank-you">
+      <section>
         <h1>Thank You For Your Order!</h1>
         <p>Your payment has been processed successfully.</p>
         <p>Your order is now being prepared.</p>
@@ -49,33 +36,30 @@ export default function Checkout() {
 
   return (
     <>
-      <section className="checkout">
-        <div className="checkout-form">
-          <h2>Checkout</h2>
+      <section>
+        <h2>Checkout</h2>
+        <form action={placeOrder}>
+          <label>
+            Shipping Address
+            <input type="text" name="shippingAddress" required />
+          </label>
 
-          <form action={placeOrder}>
-            <label>
-              Shipping Address
-              <input type="text" name="shippingAddress" required />
-            </label>
+          <label>
+            Discount Code
+            <input type="text" name="discountCode" />
+          </label>
 
-            <label>
-              Discount Code
-              <input type="text" name="discountCode" />
-            </label>
+          <Payments />
 
-            <Payments />
+          <h3>Order Total: ${(total / 100).toFixed(2)}</h3>
 
-            <h3>Order Total: ${(total / 100).toFixed(2)}</h3>
+          <button type="submit">Place Order</button>
 
-            <button type="submit">Place Order</button>
-
-            {error && <p className="error">{error}</p>}
-          </form>
-        </div>
+          {error && <p>{error}</p>}
+        </form>
       </section>
 
-      <div className="checkout-cart">
+      <div>
         <Cart />
       </div>
     </>

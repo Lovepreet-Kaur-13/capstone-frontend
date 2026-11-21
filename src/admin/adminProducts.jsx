@@ -94,11 +94,11 @@ export default function AdminProducts() {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Image</th>
             <th>Title</th>
             <th>Description</th>
             <th>Category</th>
             <th>Brand</th>
-            <th>Image</th>
             <th>Size</th>
             <th>Color</th>
             <th>Price</th>
@@ -122,7 +122,7 @@ export default function AdminProducts() {
               <td>{product.brand}</td>
               <td>{product.size}</td>
               <td>{product.color}</td>
-              <td>${Number(product.price).toFixed(2)}</td>
+              <td>${Number(product.price_cents / 100).toFixed(2)}</td>
               <td>{product.stock_quantity}</td>
             </tr>
           ))}
