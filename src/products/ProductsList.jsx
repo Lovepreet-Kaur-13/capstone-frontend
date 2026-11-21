@@ -6,7 +6,7 @@ export default function ProductsList({ products }) {
   const { addToCart } = useCart();
 
   return (
-    <ul className="products">
+    <ul>
       {products.map((product) => (
         <li key={product.id}>
           <figure>
