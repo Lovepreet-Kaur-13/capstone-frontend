@@ -25,13 +25,13 @@ export default function AdminProducts() {
     setError(null);
     setMessage(null);
     const product = {
+      imageUrl: formData.get("imageUrl"),
       title: formData.get("title"),
       description: formData.get("description"),
       category: formData.get("category"),
       brand: formData.get("brand"),
       color: formData.get("color"),
       size: formData.get("size"),
-      imageUrl: formData.get("imageUrl"),
       price: Number(formData.get("price")),
       stockQuantity: Number(formData.get("stockQuantity")),
     };
@@ -48,6 +48,10 @@ export default function AdminProducts() {
     <>
       <h2>Add a product</h2>
       <form action={onCreateProduct}>
+        <label>
+          Image URL
+          <input type="url" name="imageUrl" />
+        </label>
         <label>
           Title
           <input type="text" name="title" required />
@@ -71,10 +75,6 @@ export default function AdminProducts() {
         <label>
           Size
           <input type="text" name="size" required />
-        </label>
-        <label>
-          Image URL
-          <input type="url" name="imageUrl" />
         </label>
         <label>
           Price
@@ -109,10 +109,6 @@ export default function AdminProducts() {
           {products.map((product) => (
             <tr key={product.id}>
               <td>{product.id}</td>
-              <td>{product.title}</td>
-              <td>{product.description}</td>
-              <td>{product.category}</td>
-              <td>{product.brand}</td>
               <td>
                 {product.image_url ? (
                   <img src={product.image_url} alt={product.title} width="60" />
@@ -120,6 +116,10 @@ export default function AdminProducts() {
                   "-"
                 )}
               </td>
+              <td>{product.title}</td>
+              <td>{product.description}</td>
+              <td>{product.category}</td>
+              <td>{product.brand}</td>
               <td>{product.size}</td>
               <td>{product.color}</td>
               <td>${Number(product.price).toFixed(2)}</td>

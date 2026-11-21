@@ -1,60 +1,55 @@
-// Base URL of your backend
 const API = import.meta.env.VITE_API;
 
-const authHeaders = (token) => ({
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
-});
-
-// The backend sends errors as plain text, e.g. res.status(400).send("...")
-async function handleError(response, fallback) {
-  const text = await response.text();
-  throw Error(text || fallback);
-}
-
-/** The logged-in user's own orders (GET /orders) */
+/** Fetches the logged-in user's own orders. */
 export async function getOrders(token) {
-  const response = await fetch(`${API}/orders`, {
-    headers: authHeaders(token),
+  const response = await fetch(API + "/orders", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (!response.ok) await handleError(response, "Could not load orders.");
+  // Errors come back as plain text (e.g. "Unauthorized")
+  if (!response.ok) throw Error(await response.text());
   return response.json();
 }
 
-/**
- * The logged-in user's own orders (GET /orders), used by Account.jsx.
- * The backend works out the user from the token, so only the token is sent.
- * Works whether it's called as getOrdersByUserId(token)
- * or getOrdersByUserId(userId, token): the token is the last argument.
- */
-export async function getOrdersByUserId(...args) {
-  const token = args[args.length - 1];
+/** Fetches the logged-in user's own orders. The backend gets the user from the token. */
+export async function getOrdersByUserId(userId, token) {
   return getOrders(token);
 }
 
-/** Admin: every order (GET /orders/all) */
+/** Fetches every order. Requires an admin token. */
 export async function getAllOrders(token) {
-  const response = await fetch(`${API}/orders/all`, {
-    headers: authHeaders(token),
+  const response = await fetch(API + "/orders/all", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (!response.ok) await handleError(response, "Could not load orders.");
+  if (!response.ok) throw Error(await response.text());
   return response.json();
 }
 
-/** Products in an order (GET /orders/:id/products) */
+/** Fetches the products in an order. */
 export async function getProductsByOrderId(orderId, token) {
-  const response = await fetch(`${API}/orders/${orderId}/products`, {
-    headers: authHeaders(token),
+  const response = await fetch(API + "/orders/" + orderId + "/products", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (!response.ok) await handleError(response, "Could not load products.");
+  if (!response.ok) throw Error(await response.text());
   return response.json();
 }
 
-/** Admin: delete a canceled order (DELETE /orders/:id) */
+/** Deletes a canceled order. Requires an admin token. */
 export async function deleteOrder(token, id) {
-  const response = await fetch(`${API}/orders/${id}`, {
+  const response = await fetch(API + "/orders/" + id, {
     method: "DELETE",
-    headers: authHeaders(token),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
-  if (!response.ok) await handleError(response, "Could not delete order.");
+  if (!response.ok) throw Error(await response.text());
 }
