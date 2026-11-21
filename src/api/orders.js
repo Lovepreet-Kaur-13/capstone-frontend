@@ -8,13 +8,15 @@ export async function getOrders(token) {
       Authorization: `Bearer ${token}`,
     },
   });
-  // Errors come back as plain text (e.g. "Unauthorized")
-  if (!response.ok) throw Error(await response.text());
+
+  // The backend sends errors as plain text (e.g. "Invalid token.")
+  if (!response.ok)
+    throw Error((await response.text()) || "Could not load orders.");
   return response.json();
 }
 
-/** Fetches the logged-in user's own orders. The backend gets the user from the token. */
-export async function getOrdersByUserId(userId, token) {
+/** Fetches the logged-in user's orders. */
+export async function getOrdersByUserId(token) {
   return getOrders(token);
 }
 
@@ -26,6 +28,7 @@ export async function getAllOrders(token) {
       Authorization: `Bearer ${token}`,
     },
   });
+
   if (!response.ok) throw Error(await response.text());
   return response.json();
 }

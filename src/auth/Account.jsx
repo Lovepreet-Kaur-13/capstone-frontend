@@ -17,7 +17,7 @@ export default function Accounts() {
 
   const syncOrders = async (token) => {
     const data = await getOrdersByUserId(token);
-    console.log(data);
+    console.log("Orders:", data);
     setOrders(data);
   };
 
