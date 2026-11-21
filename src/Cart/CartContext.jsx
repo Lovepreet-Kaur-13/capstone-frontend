@@ -5,6 +5,12 @@ const CartContext = createContext(null);
 
 const API = import.meta.env.VITE_API;
 
+// The backend sends errors as plain text, e.g. res.status(400).send("...")
+async function handleError(response, fallback) {
+  const text = await response.text();
+  throw Error(text || fallback);
+}
+
 export function CartProvider({ children }) {
   const { token } = useAuth();
 
@@ -16,36 +22,41 @@ export function CartProvider({ children }) {
     setTotal(0);
   };
 
-  // Load cart
+  // Load cart (GET /carts) - the backend finds or creates the user's cart
   const loadCart = async () => {
     if (!token) {
       clearCart();
       return;
     }
 
-    const response = await fetch(`${API}/carts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(`${API}/carts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!response.ok) throw Error("Could not load cart");
+      if (!response.ok) await handleError(response, "Could not load cart");
 
-    const result = await response.json();
+      const result = await response.json();
 
-    setCart(result);
-    setTotal(result.total_cents || 0); // cents
+      setCart(result);
+      setTotal(result.total_cents || 0); // cents
+    } catch (e) {
+      console.error(e);
+      clearCart();
+    }
   };
 
   useEffect(() => {
     loadCart();
   }, [token]);
 
-  // Add product
+  // Add product (POST /carts/products)
   const addToCart = async (product) => {
-    if (!token || !cart?.id) return;
+    if (!token) return;
 
-    const response = await fetch(`${API}/carts/${cart.id}/products`, {
+    const response = await fetch(`${API}/carts/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,63 +67,59 @@ export function CartProvider({ children }) {
       }),
     });
 
-    if (!response.ok) throw Error("Could not add product");
+    if (!response.ok) await handleError(response, "Could not add product");
 
     await loadCart();
   };
 
-  // Update quantity
+  // Update quantity (PATCH /carts/products/:productId)
   const updateQuantity = async (productId, quantity) => {
-    if (!token || !cart?.id || quantity < 1) return;
+    if (!token || quantity < 1) return;
 
-    const response = await fetch(
-      `${API}/carts/${cart.id}/products/${productId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ quantity }),
+    const response = await fetch(`${API}/carts/products/${productId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: JSON.stringify({ quantity }),
+    });
 
-    if (!response.ok) throw Error("Could not update quantity");
+    if (!response.ok) await handleError(response, "Could not update quantity");
 
     await loadCart();
   };
 
-  // Remove product
+  // Remove product (DELETE /carts/products/:productId)
   const removeFromCart = async (productId) => {
-    if (!token || !cart?.id) return;
-
-    const response = await fetch(
-      `${API}/carts/${cart.id}/products/${productId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (!response.ok) throw Error("Could not remove product");
-
-    await loadCart();
-  };
-
-  // Complete order
-  const completeOrder = async () => {
     if (!token) return;
 
-    const response = await fetch(`${API}/orders/cart/complete`, {
-      method: "PATCH",
+    const response = await fetch(`${API}/carts/products/${productId}`, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (!response.ok) throw Error("Could not complete order");
+    if (!response.ok) await handleError(response, "Could not remove product");
+
+    await loadCart();
+  };
+
+  // Complete order (PATCH /carts/complete)
+  const completeOrder = async ({ shippingAddress, discountCode } = {}) => {
+    if (!token) return;
+
+    const response = await fetch(`${API}/carts/complete`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ shippingAddress, discountCode }),
+    });
+
+    if (!response.ok) await handleError(response, "Could not complete order");
 
     await loadCart();
   };

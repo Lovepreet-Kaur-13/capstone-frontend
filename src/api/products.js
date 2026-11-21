@@ -4,7 +4,7 @@ const API = import.meta.env.VITE_API;
 export async function getProducts() {
   try {
     const response = await fetch(API + "/products");
-    console.log(response);
+    if (!response.ok) throw Error(await response.text());
     const result = await response.json();
     return result;
   } catch (error) {
@@ -13,12 +13,12 @@ export async function getProducts() {
   }
 }
 
-/** Fetches a single book by its ID. */
+/** Fetches a single product by its ID. */
 export async function getProduct(id) {
   const response = await fetch(API + "/products/" + id);
-  const result = await response.json();
-  if (!response.ok) throw Error(result.message);
-  return result;
+  // Errors come back as plain text (e.g. "Product not found")
+  if (!response.ok) throw Error(await response.text());
+  return response.json();
 }
 /** Creates a new product. Requires an admin token. */
 export async function createProduct(token, product) {

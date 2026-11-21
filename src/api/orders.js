@@ -1,5 +1,4 @@
-// Base URL of your backend. Change this line to match how your other
-// api files define it.
+// Base URL of your backend
 const API = import.meta.env.VITE_API;
 
 const authHeaders = (token) => ({
@@ -39,28 +38,6 @@ export async function getAllOrders(token) {
     headers: authHeaders(token),
   });
   if (!response.ok) await handleError(response, "Could not load orders.");
-  return response.json();
-}
-
-/** Create an order (POST /orders) */
-export async function createOrder(token, order) {
-  const response = await fetch(`${API}/orders`, {
-    method: "POST",
-    headers: authHeaders(token),
-    body: JSON.stringify(order),
-  });
-  if (!response.ok) await handleError(response, "Could not create order.");
-  return response.json();
-}
-
-/** Add a product to an order (POST /orders/:id/products) */
-export async function addProductToOrder(token, orderId, productId, quantity) {
-  const response = await fetch(`${API}/orders/${orderId}/products`, {
-    method: "POST",
-    headers: authHeaders(token),
-    body: JSON.stringify({ productId, quantity }),
-  });
-  if (!response.ok) await handleError(response, "Could not add product.");
   return response.json();
 }
 
