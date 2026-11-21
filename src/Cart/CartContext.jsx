@@ -7,85 +7,129 @@ const API = import.meta.env.VITE_API;
 
 export function CartProvider({ children }) {
   const { token } = useAuth();
-  const [cart, setCart] = useState([]);
+
+  // Store the current user's cart.
+  const [cart, setCart] = useState(null);
+
+  // Store the cart total in cents.
   const [total, setTotal] = useState(0);
 
+  // Clear cart state when user logs out.
   const clearCart = () => {
-    setCart([]);
+    setCart(null);
     setTotal(0);
   };
 
-  /** Loads the user's cart. The backend finds or creates it. */
+  /* Load the user's active cart. */
   const loadCart = async () => {
-    if (!token) return clearCart();
+    if (!token) {
+      clearCart();
+      return;
+    }
 
-    const response = await fetch(API + "/carts", {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await fetch(`${API}/carts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    if (!response.ok) throw Error(await response.text());
-    const result = await response.json();
-    setCart(result);
-    setTotal(result.total_cents || 0); // cents
+
+    const cartData = await response.json();
+
+    if (!response.ok) throw Error(cartData.message || "Failed to load cart");
+
+    setCart(cartData);
+    setTotal(cartData.total_cents || 0);
   };
 
+  // Load cart whenever the authentication token changes.
   useEffect(() => {
     loadCart().catch((error) => {
-      console.log(error);
+      console.error(error);
       clearCart();
     });
   }, [token]);
 
-  /** Adds a product to the cart. */
+  /* Add a product to the cart. */
   const addToCart = async (product) => {
-    const response = await fetch(API + "/carts/products", {
+    if (!cart) return;
+
+    const response = await fetch(`${API}/carts/${cart.id}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ productId: product.id }),
+      body: JSON.stringify({
+        productId: product.id,
+      }),
     });
-    if (!response.ok) throw Error(await response.text());
+
+    if (!response.ok) {
+      throw Error(await response.text());
+    }
+
     await loadCart();
   };
 
-  /** Changes how many of a product are in the cart. */
+  /* Update a product quantity in the cart. */
   const updateQuantity = async (productId, quantity) => {
-    if (quantity < 1) return;
+    if (!cart || quantity < 1) return;
 
-    const response = await fetch(API + "/carts/products/" + productId, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${API}/carts/${cart.id}/products/${productId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          quantity,
+        }),
       },
-      body: JSON.stringify({ quantity }),
-    });
-    if (!response.ok) throw Error(await response.text());
+    );
+
+    if (!response.ok) {
+      throw Error(await response.text());
+    }
+
     await loadCart();
   };
 
-  /** Removes a product from the cart. */
+  /* Remove a product from the cart. */
   const removeFromCart = async (productId) => {
-    const response = await fetch(API + "/carts/products/" + productId, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) throw Error(await response.text());
+    if (!cart) return;
+
+    const response = await fetch(
+      `${API}/carts/${cart.id}/products/${productId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw Error(await response.text());
+    }
+
     await loadCart();
   };
 
-  /** Turns the cart into an order. */
-  const completeOrder = async ({ shippingAddress, discountCode } = {}) => {
-    const response = await fetch(API + "/carts/complete", {
+  /* Complete the current order. */
+  const completeOrder = async () => {
+    const response = await fetch(`${API}/carts/complete`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ shippingAddress, discountCode }),
     });
-    if (!response.ok) throw Error(await response.text());
+
+    if (!response.ok) {
+      throw Error(await response.text());
+    }
+
     await loadCart();
   };
 
@@ -94,8 +138,6 @@ export function CartProvider({ children }) {
       value={{
         cart,
         total,
-        loadCart,
-        clearCart,
         addToCart,
         updateQuantity,
         removeFromCart,
@@ -108,7 +150,13 @@ export function CartProvider({ children }) {
 }
 
 export function useCart() {
+  // Access cart context values.
   const context = useContext(CartContext);
-  if (!context) throw Error("useCart must be used within a CartProvider");
+
+  // Ensure hook is used inside CartProvider.
+  if (!context) {
+    throw Error("useCart must be used within a CartProvider");
+  }
+
   return context;
 }

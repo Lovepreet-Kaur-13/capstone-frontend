@@ -5,11 +5,10 @@ import { useCart } from "./CartContext";
 export default function Cart() {
   const { cart, total, updateQuantity, removeFromCart } = useCart();
 
-  if (!cart) {
-    return <p>Loading cart...</p>;
-  }
+  // Check whether the user is currently on the checkout page.
   const isCheckout = location.pathname === "/checkout";
-  const items = cart.items || [];
+
+  const items = cart?.items || [];
 
   return (
     <section className="cart">
@@ -29,14 +28,10 @@ export default function Cart() {
               />
             ))}
           </ul>
-
           <h3>Total: ${(total / 100).toFixed(2)}</h3>
-          {/* Go to checkout page */}
-          {!isCheckout && (
-            <Link className="" to="/checkout">
-              Complete Order
-            </Link>
-          )}
+
+          {/* Show the Complete Order link only when the user is NOT on the checkout page */}
+          {!isCheckout && <Link to="/checkout">Complete Order</Link>}
         </>
       )}
     </section>
