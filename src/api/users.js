@@ -1,17 +1,17 @@
 const API = import.meta.env.VITE_API;
 
+/** The logged-in user's profile (GET /users/profile) */
 export async function getUser(token) {
-  try {
-    const response = await fetch(API + "/users/profile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const response = await fetch(API + "/users/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    const result = await response.json();
-    return result;
-  } catch (e) {
-    console.error(e);
-    return [];
+  // The backend sends errors as plain text (e.g. "Invalid token.")
+  if (!response.ok) {
+    throw Error((await response.text()) || "Could not load user.");
   }
+
+  return response.json();
 }

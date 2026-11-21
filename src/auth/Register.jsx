@@ -38,15 +38,15 @@ export default function Register() {
         </label>
         <label>
           Username
-          <input type="text" name="username" />
+          <input type="text" name="username" required />
         </label>
         <label>
           Password
           <input type="password" name="password" required />
         </label>
         <label>
-          email
-          <input type="email" name="email" />
+          Email
+          <input type="email" name="email" required />
         </label>
         <button>Register</button>
         {error && <output>{error}</output>}
