@@ -36,7 +36,7 @@ export default function ProductDetails() {
         </figure>
         <section>
           <h1>{product.title}</h1>
-          <p>${product.price}</p>
+          <p>${product.price_cents}</p>
           <p>{product.description}</p>
           <p>{product.stock_quantity}</p>
         </section>

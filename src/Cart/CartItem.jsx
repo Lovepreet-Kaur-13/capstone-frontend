@@ -8,7 +8,7 @@ export default function CartItem({ item, updateQuantity, removeFromCart }) {
       <div>
         <h3>{item.title}</h3>
 
-        <p>${Number(item.price).toFixed(2)}</p>
+        <p>${Number(item.price_cents / 100).toFixed(2)}</p>
 
         {/* Decrease the quantity by 1 */}
         <button

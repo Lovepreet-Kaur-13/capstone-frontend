@@ -20,7 +20,7 @@ export default function ProductsList({ products }) {
             <h2>
               <Link to={`/products/${product.id}`}> {product.title}</Link>
             </h2>
-            <p>${product.price}</p>
+            <p>${(product.price_cents / 100).toFixed(2)}</p>
 
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </section>
