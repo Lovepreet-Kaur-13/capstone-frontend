@@ -47,7 +47,7 @@ export default function OrderItems({ orderId, token, setOrderId }) {
               <tr key={product.id}>
                 <td className="border px-3 py-2">{product.title}</td>
                 <td className="border px-3 py-2">
-                  ${Number(product.price).toFixed(2)}
+                  ${(product.price_cents / 100).toFixed(2)}
                 </td>
                 <td className="border px-3 py-2">{product.quantity}</td>
               </tr>
