@@ -21,7 +21,10 @@ export default function CartItem({ item, updateQuantity, removeFromCart }) {
         <p>Quantity: {item.quantity}</p>
 
         {/* Increase the quantity by 1 */}
-        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+        <button
+          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+          disabled={item.quantity >= item.stock_quantity}
+        >
           +
         </button>
 

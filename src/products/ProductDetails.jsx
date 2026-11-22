@@ -38,10 +38,20 @@ export default function ProductDetails() {
           <h1>{product.title}</h1>
           <p>${product.price_cents}</p>
           <p>{product.description}</p>
-          <p>{product.stock_quantity}</p>
+          <p>size: {product.size}</p>
+          <p>
+            {product.stock_quantity > 0
+              ? `Available: ${product.stock_quantity}`
+              : "Out of Stock"}
+          </p>
         </section>
 
-        <button onClick={() => addToCart(product)}>Add to Cart</button>
+        <button
+          disabled={product.stock_quantity === 0}
+          onClick={() => addToCart(product)}
+        >
+          {product.stock_quantity === 0 ? "Out of Stock" : "Add to Cart"}
+        </button>
       </article>
       <Cart />
     </>

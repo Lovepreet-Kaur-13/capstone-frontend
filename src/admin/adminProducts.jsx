@@ -32,7 +32,7 @@ export default function AdminProducts() {
       brand: formData.get("brand"),
       color: formData.get("color"),
       size: formData.get("size"),
-      price: Number(formData.get("price")),
+      priceCents: Number(formData.get("priceCents")),
       stockQuantity: Number(formData.get("stockQuantity")),
     };
     try {
@@ -78,7 +78,7 @@ export default function AdminProducts() {
         </label>
         <label>
           Price
-          <input type="number" name="price" min="0" step="0.01" required />
+          <input type="number" name="priceCents" min="0" step="1" required />
         </label>
         <label>
           Stock quantity
@@ -101,7 +101,7 @@ export default function AdminProducts() {
             <th>Brand</th>
             <th>Size</th>
             <th>Color</th>
-            <th>Price</th>
+            <th>Price (in cents) </th>
             <th>Stock</th>
           </tr>
         </thead>
@@ -123,7 +123,19 @@ export default function AdminProducts() {
               <td>{product.size}</td>
               <td>{product.color}</td>
               <td>${Number(product.price_cents / 100).toFixed(2)}</td>
-              <td>{product.stock_quantity}</td>
+              <td>
+                <p
+                  className={
+                    product.stock_quantity > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }
+                >
+                  {product.stock_quantity > 0
+                    ? product.stock_quantity
+                    : "Out of Stock"}
+                </p>
+              </td>
             </tr>
           ))}
         </tbody>
