@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { getUser } from "../api/users";
 import { useAuth } from "../auth/AuthContext";
+import logo from "../assets/deckMart.png";
 
 export default function Navbar() {
   const { token, logout } = useAuth();
@@ -23,10 +24,18 @@ export default function Navbar() {
   }, [token]);
 
   return (
-    <header id="navbar" className="flex justify-between p-4">
-      <NavLink id="brand" to="/">
-        Frontend Template
-      </NavLink>
+    <header className="flex justify-between p-2 ">
+      <div className="flex items-center font-bold text-lg">
+        <img
+          src={logo}
+          alt="DeckMart Logo"
+          className="h-12 w-auto rounded-lg object-contain"
+        />
+
+        <NavLink to="/">
+          Deck<span className="text-red-600">Mart</span>
+        </NavLink>
+      </div>
 
       <nav className="flex items-center gap-4">
         <NavLink to="/products">Products</NavLink>

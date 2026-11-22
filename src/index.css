@@ -16,9 +16,9 @@
   }
 
   /* Links */
-  a {
+  /* a {
     @apply text-blue-600 underline cursor-pointer;
-  }
+  } */
 
   /* Lists */
   ul {
