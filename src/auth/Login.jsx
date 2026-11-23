@@ -22,21 +22,47 @@ export default function Login() {
   };
 
   return (
-    <>
-      <h1>Log in to your account</h1>
-      <form action={onLogin}>
-        <label>
-          Username
-          <input type="username" name="username" required />
-        </label>
-        <label>
-          Password
-          <input type="password" name="password" required />
-        </label>
-        <button>Login</button>
-        {error && <output>{error}</output>}
-      </form>
-      <Link to="/register">Need an account? Register here.</Link>
-    </>
+    <main className="flex justify-center px-4 pt-10">
+      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow">
+        <h1 className="text-2xl font-bold text-center mb-6 text-teal-800">
+          Login to DeckMart
+        </h1>
+
+        <form action={onLogin} className="space-y-3">
+          <label className="block">
+            Username
+            <input type="text" name="username" required className="w-full" />
+          </label>
+
+          <label className="block">
+            Password
+            <input
+              type="password"
+              name="password"
+              required
+              className="w-full"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="w-full bg-teal-600 text-white py-2 rounded"
+          >
+            Login
+          </button>
+
+          {error && (
+            <output className="text-red-600 text-center block">{error}</output>
+          )}
+        </form>
+
+        <p className="text-center mt-4">
+          Need an account?{" "}
+          <Link to="/register" className="text-teal-600">
+            Register here
+          </Link>
+        </p>
+      </div>
+    </main>
   );
 }

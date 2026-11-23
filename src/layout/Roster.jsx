@@ -12,22 +12,26 @@ export default function Roster({
   // Count products by category
   for (let i = 0; i < products.length; i++) {
     const category = products[i].category;
-    // First time seeing this category
+
     if (!categoryCounts[category]) {
       categoryCounts[category] = 0;
       categories.push(category);
     }
-    // Increment category count
+
     categoryCounts[category] += 1;
   }
 
   return (
-    <nav className="roster">
-      <ul>
+    <nav className="w-full lg:w-56 bg-white rounded-xl shadow-md p-4 h-fit">
+      <h2 className="text-xl font-bold mb-4 border-b pb-2">Categories</h2>
+
+      <ul className="space-y-2">
         <li
-          className={
-            "category" + (selectedCategory === null ? " selected" : "")
-          }
+          className={`cursor-pointer p-2 rounded ${
+            selectedCategory === null
+              ? "bg-teal-800 text-white"
+              : "hover:bg-gray-100"
+          }`}
           onClick={() => setSelectedCategory(null)}
         >
           All Products ({products.length})
@@ -36,9 +40,11 @@ export default function Roster({
         {categories.map((category) => (
           <li
             key={category}
-            className={
-              "category" + (category === selectedCategory ? " selected" : "")
-            }
+            className={`cursor-pointer p-2 rounded ${
+              category === selectedCategory
+                ? "bg-teal-800 text-white"
+                : "hover:bg-gray-100"
+            }`}
             onClick={() => setSelectedCategory(category)}
           >
             {category} ({categoryCounts[category]})

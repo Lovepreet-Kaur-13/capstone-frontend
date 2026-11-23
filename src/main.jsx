@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import { AuthProvider } from "./auth/AuthContext.jsx";
 import "./index.css";
 import { CartProvider } from "./Cart/CartContext.jsx";
+import "@flaticon/flaticon-uicons/css/all/all.css";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
