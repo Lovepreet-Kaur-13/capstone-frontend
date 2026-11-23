@@ -13,10 +13,6 @@
     @apply mb-4 leading-6;
   }
 
-  ul {
-    @apply list-disc pl-6 mb-4;
-  }
-
   li {
     @apply mb-1;
   }
