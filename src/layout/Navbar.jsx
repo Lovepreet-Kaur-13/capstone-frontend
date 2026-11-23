@@ -23,9 +23,14 @@ export default function Navbar() {
     syncUser();
   }, [token]);
 
+  const navStyle = ({ isActive }) =>
+    isActive
+      ? "p-2 text-teal-700 border-b-2 border-teal-700 font-semibold"
+      : "p-2 hover:text-teal-700";
+
   return (
-    <header className="flex justify-between p-2 ">
-      <div className="flex items-center font-bold text-lg">
+    <header className="flex flex-col md:flex-row md:justify-between items-center gap-3 p-2">
+      <div className="flex items-center font-bold text-lg shrink-0">
         <img
           src={logo}
           alt="DeckMart Logo"
@@ -37,24 +42,40 @@ export default function Navbar() {
         </NavLink>
       </div>
 
-      <nav className="flex items-center gap-4">
-        <NavLink to="/products">Products</NavLink>
+      <nav className="flex flex-wrap items-center gap-2">
+        <NavLink to="/products" className={navStyle}>
+          Products
+        </NavLink>
 
         {/* Show admin tools only to administrators. */}
-        {user?.is_admin && <NavLink to="/admin">Admin</NavLink>}
+        {user?.is_admin && (
+          <NavLink to="/admin" className={navStyle}>
+            Admin
+          </NavLink>
+        )}
 
         {token ? (
           <>
             {/* Show the cart only to regular users. */}
-            {!user?.is_admin && <NavLink to="/cart">Cart</NavLink>}
+            {!user?.is_admin && (
+              <NavLink to="/cart" className={navStyle}>
+                Cart
+              </NavLink>
+            )}
 
-            <NavLink to="/account/profile">Account</NavLink>
+            <NavLink to="/account/profile" className={navStyle}>
+              Account
+            </NavLink>
 
             {/* Sign out the current user. */}
-            <button onClick={logout}>Log Out</button>
+            <button onClick={logout} className={navStyle}>
+              Log Out
+            </button>
           </>
         ) : (
-          <NavLink to="/login">Log In</NavLink>
+          <NavLink to="/login" className={navStyle}>
+            Log In
+          </NavLink>
         )}
       </nav>
     </header>
