@@ -44,27 +44,50 @@ export default function Products() {
 
   return (
     <>
-      <section>
-        <h1>Products</h1>
+      <div className="max-w-8xl mx-auto px-8 py-4">
+        <h2 className="text-2xl font-bold text-center mb-4 -teal-800">
+          Browse Our Playing Cards Collection
+        </h2>
 
-        <form action={tryFilteredProduct}>
+        <form
+          action={tryFilteredProduct}
+          className="flex flex-col sm:flex-row gap-2 mb-4 "
+        >
           <input
             type="text"
             name="productName"
             placeholder="Search for a Product..."
+            className="flex-1 shadow-lg"
           />
-          <button type="submit">Search</button>
+
+          <button
+            type="submit"
+            className="h-10 px-4 bg-teal-800 text-white rounded flex items-center justify-center"
+          >
+            Search
+          </button>
         </form>
-      </section>
-      <Roster
-        products={products}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
 
-      <ProductsList products={filteredProducts} />
+        <img
+          src="https://images.unsplash.com/photo-1604345250885-11f528eec3ff?q=80&w=1219&auto=format&fit=crop"
+          alt="Playing Cards Banner"
+          className="w-full h-52 object-cover rounded-lg mb-6"
+        />
 
-      <Cart />
+        <section className="flex flex-col lg:flex-row gap-4">
+          <Roster
+            products={products}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+
+          <div className="flex-1">
+            <ProductsList products={filteredProducts} />
+          </div>
+
+          <Cart />
+        </section>
+      </div>
     </>
   );
 }

@@ -5,48 +5,51 @@ export default function ProductsList({ products }) {
   const { cart, addToCart } = useCart();
 
   return (
-    <ul>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => {
         const cartItem = cart?.items?.find((item) => item.id === product.id);
 
         return (
-          <li key={product.id}>
-            <figure>
-              <img
-                src={product.image_url}
-                alt={`Image of ${product.title}`}
-                width={100}
-              />
-            </figure>
+          <li
+            key={product.id}
+            className="bg-white shadow-md rounded-xl p-4 text-center"
+          >
+            <img
+              src={product.image_url}
+              alt={product.title}
+              className="w-full h-40 object-contain rounded-lg mb-3"
+            />
 
-            <section>
-              <h2>
-                <Link to={`/products/${product.id}`}>{product.title}</Link>
-              </h2>
+            <h3 className="font-semibold text-lg">
+              <Link to={`/products/${product.id}`}>{product.title}</Link>
+            </h3>
 
-              <p>
-                {product.stock_quantity > 0
-                  ? `Available: ${product.stock_quantity}`
-                  : "Out of Stock"}
-              </p>
+            <p
+              className={
+                product.stock_quantity > 0 ? "text-green-600" : "text-red-600"
+              }
+            >
+              {product.stock_quantity > 0
+                ? `Stock: ${product.stock_quantity}`
+                : "Out of Stock"}
+            </p>
 
-              <p>${(product.price_cents / 100).toFixed(2)}</p>
+            <p className="font-medium mb-3">
+              ${(product.price_cents / 100).toFixed(2)}
+            </p>
 
-              <button
-                className={
-                  product.stock_quantity === 0
-                    ? "bg-red-500 text-white"
-                    : "bg-teal-800 text-white hover:bg-green-800"
-                }
-                disabled={
-                  (cartItem?.quantity || 0) >= product.stock_quantity ||
-                  product.stock_quantity === 0
-                }
-                onClick={() => addToCart(product)}
-              >
-                {product.stock_quantity === 0 ? "Out of Stock" : "Add to Cart"}
-              </button>
-            </section>
+            <button
+              disabled={
+                (cartItem?.quantity || 0) >= product.stock_quantity ||
+                product.stock_quantity === 0
+              }
+              onClick={() => addToCart(product)}
+              className={`w-full py-2 rounded-md text-white ${
+                product.stock_quantity === 0 ? "bg-red-500" : "bg-teal-800"
+              }`}
+            >
+              {product.stock_quantity === 0 ? "Out of Stock" : "Add to Cart"}
+            </button>
           </li>
         );
       })}
