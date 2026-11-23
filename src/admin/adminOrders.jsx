@@ -35,34 +35,38 @@ export default function AdminOrders() {
     <>
       <h2>Orders ({orders.length})</h2>
       {orderError && <p>{orderError}</p>}
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Shipping address</th>
-            <th>Discount</th>
-            <th>Total</th>
-            <th>Completed</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{new Date(order.date).toLocaleDateString()}</td>
-              <td>{order.shipping_address}</td>
-              <td>{order.discount_code ?? "-"}</td>
-              <td>${(order.total_cents / 100).toFixed(2)}</td>
-              <td>{order.completed ? "Yes" : "pending"}</td>
-              <td>
-                <button onClick={() => onDeleteOrder(order.id)}>Delete</button>
-              </td>
+      <div className="max-h-[70vh] overflow-auto rounded-xl border border-gray-300">
+        <table className="text-sm">
+          <thead className="sticky top-0 z-10">
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Shipping address</th>
+              <th>Discount</th>
+              <th>Total</th>
+              <th>Completed</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{new Date(order.date).toLocaleDateString()}</td>
+                <td>{order.shipping_address}</td>
+                <td>{order.discount_code ?? "-"}</td>
+                <td>${(order.total_cents / 100).toFixed(2)}</td>
+                <td>{order.completed ? "Yes" : "pending"}</td>
+                <td>
+                  <button onClick={() => onDeleteOrder(order.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

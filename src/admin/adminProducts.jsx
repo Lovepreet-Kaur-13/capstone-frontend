@@ -45,101 +45,121 @@ export default function AdminProducts() {
   };
 
   return (
-    <>
-      <h2>Add a product</h2>
-      <form action={onCreateProduct}>
-        <label>
-          Image URL
-          <input type="url" name="imageUrl" />
-        </label>
-        <label>
-          Title
-          <input type="text" name="title" required />
-        </label>
-        <label>
-          Description
-          <textarea name="description" required />
-        </label>
-        <label>
-          Category
-          <input type="text" name="category" required />
-        </label>
-        <label>
-          Brand
-          <input type="text" name="brand" required />
-        </label>
-        <label>
-          Color
-          <input type="text" name="color" required />
-        </label>
-        <label>
-          Size
-          <input type="text" name="size" required />
-        </label>
-        <label>
-          Price
-          <input type="number" name="priceCents" min="0" step="1" required />
-        </label>
-        <label>
-          Stock quantity
-          <input type="number" name="stockQuantity" min="0" defaultValue="0" />
-        </label>
-        <button>Add product</button>
-        {message && <output>{message}</output>}
-        {error && <output>{error}</output>}
-      </form>
+    <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:items-start">
+      {/* Left: Add a product */}
+      <section className="lg:sticky lg:top-4">
+        <h2>Add a product</h2>
+        <form
+          action={onCreateProduct}
+          className="p-4 mb-6 rounded-xl border border-gray-300"
+        >
+          <label>
+            Image URL
+            <input type="url" name="imageUrl" />
+          </label>
+          <label>
+            Title
+            <input type="text" name="title" required />
+          </label>
+          <label>
+            Description
+            <textarea name="description" required />
+          </label>
+          <label>
+            Category
+            <input type="text" name="category" required />
+          </label>
+          <label>
+            Brand
+            <input type="text" name="brand" required />
+          </label>
+          <label>
+            Color
+            <input type="text" name="color" required />
+          </label>
+          <label>
+            Size
+            <input type="text" name="size" required />
+          </label>
+          <label>
+            Price
+            <input type="number" name="priceCents" min="0" step="1" required />
+          </label>
+          <label>
+            Stock quantity
+            <input
+              type="number"
+              name="stockQuantity"
+              min="0"
+              defaultValue="0"
+            />
+          </label>
+          <button>Add product</button>
+          {message && <output>{message}</output>}
+          {error && <output>{error}</output>}
+        </form>
+      </section>
 
-      <h2>All products ({products.length})</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Size</th>
-            <th>Color</th>
-            <th>Price (in cents) </th>
-            <th>Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>
-                {product.image_url ? (
-                  <img src={product.image_url} alt={product.title} width="60" />
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td>{product.title}</td>
-              <td>{product.description}</td>
-              <td>{product.category}</td>
-              <td>{product.brand}</td>
-              <td>{product.size}</td>
-              <td>{product.color}</td>
-              <td>${Number(product.price_cents / 100).toFixed(2)}</td>
-              <td>
-                <p
-                  className={
-                    product.stock_quantity > 0
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }
-                >
-                  {product.stock_quantity > 0
-                    ? product.stock_quantity
-                    : "Out of Stock"}
-                </p>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+      {/* Right: All products */}
+      <section className="lg:col-span-2 min-w-0">
+        <h2>All products ({products.length})</h2>
+        <div className="max-h-[70vh] overflow-auto rounded-xl border border-gray-300">
+          <table className="text-sm">
+            <thead className="sticky top-0 z-10">
+              <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Size</th>
+                <th>Color</th>
+                <th>Price (in cents) </th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.id}</td>
+                  <td>
+                    {product.image_url ? (
+                      <img
+                        src={product.image_url}
+                        alt={product.title}
+                        width="40"
+                      />
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                  <td>{product.title}</td>
+                  <td>{product.description}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  <td>{product.size}</td>
+                  <td>{product.color}</td>
+                  <td>${Number(product.price_cents / 100).toFixed(2)}</td>
+                  <td>
+                    <p
+                      className={`m-0 ${
+                        product.stock_quantity > 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {product.stock_quantity > 0
+                        ? product.stock_quantity
+                        : "Out of Stock"}
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   );
 }

@@ -34,7 +34,7 @@ export default function Admin() {
   if (!user.is_admin) return <Navigate to="/" replace />;
 
   return (
-    <>
+    <section className="w-full p-8">
       <h1>Admin Dashboard</h1>
       <p>Signed in as {user.username}</p>
 
@@ -47,6 +47,6 @@ export default function Admin() {
 
       {/* The current admin page (products or orders) renders here */}
       <Outlet />
-    </>
+    </section>
   );
 }
