@@ -7,6 +7,12 @@ import logo from "../assets/deckMart.png";
 export default function Navbar() {
   const { token, logout } = useAuth();
   const [user, setUser] = useState(null);
+  const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark");
+
+useEffect(() => {
+  document.documentElement.classList.toggle("dark", dark);
+  localStorage.setItem("theme", dark ? "dark" : "light");
+}, [dark]);
 
   useEffect(() => {
     if (!token) {
@@ -38,6 +44,10 @@ export default function Navbar() {
       </div>
 
       <nav className="flex items-center gap-4">
+      <button onClick={() => setDark(!dark)} aria-label="Toggle dark mode">
+      <i className={dark ? "fi fi-rr-sun" : "fi fi-rr-moon"}></i>{" "}
+        {dark ? "Light Mode" : "Dark Mode"}
+        </button>
         <NavLink to="/products">Products</NavLink>
 
         {/* Show admin tools only to administrators. */}
