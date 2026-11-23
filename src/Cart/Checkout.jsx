@@ -35,33 +35,54 @@ export default function Checkout() {
   }
 
   return (
-    <>
-      <section>
-        <h2>Checkout</h2>
-        <form action={placeOrder}>
-          <label>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-2">
+      {/* Checkout Card */}
+      <section className="bg-white p-6 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
+
+        <form action={placeOrder} className="space-y-4">
+          <label className="block">
             Shipping Address
-            <input type="text" name="shippingAddress" required />
+            <input
+              type="text"
+              name="shippingAddress"
+              required
+              className="w-full border rounded p-2"
+            />
           </label>
 
-          <label>
+          <label className="block">
             Discount Code
-            <input type="text" name="discountCode" />
+            <input
+              type="text"
+              name="discountCode"
+              className="w-full border rounded p-2"
+            />
           </label>
 
           <Payments />
 
-          <h3>Order Total: ${(total / 100).toFixed(2)}</h3>
+          <h3 className="text-lg font-semibold">
+            Order Total: ${(total / 100).toFixed(2)}
+          </h3>
 
-          <button type="submit">Place Order</button>
+          <button
+            type="submit"
+            className="w-full bg-teal-800 text-white py-2 rounded"
+          >
+            Place Order
+          </button>
 
-          {error && <p>{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
         </form>
       </section>
 
-      <div>
+      {/* Cart Card */}
+      <section className="bg-white p-6 rounded-xl shadow">
+        <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
+
         <Cart />
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

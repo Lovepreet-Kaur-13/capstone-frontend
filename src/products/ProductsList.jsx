@@ -1,8 +1,20 @@
 import { Link } from "react-router";
 import { useCart } from "../Cart/CartContext";
+import { useNavigate } from "react-router";
+import { useAuth } from "../auth/AuthContext";
 
 export default function ProductsList({ products }) {
   const { cart, addToCart } = useCart();
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (product) => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    await addToCart(product);
+  };
 
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -43,7 +55,7 @@ export default function ProductsList({ products }) {
                 (cartItem?.quantity || 0) >= product.stock_quantity ||
                 product.stock_quantity === 0
               }
-              onClick={() => addToCart(product)}
+              onClick={() => handleAddToCart(product)}
               className={`w-full py-2 rounded-md text-white ${
                 product.stock_quantity === 0 ? "bg-red-500" : "bg-teal-800"
               }`}
