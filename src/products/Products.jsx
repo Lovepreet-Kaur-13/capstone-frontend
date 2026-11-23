@@ -44,14 +44,19 @@ export default function Products() {
 
   return (
     <>
+      <img
+        src="https://images.pexels.com/photos/6838591/pexels-photo-6838591.jpeg"
+        alt="Playing Cards Banner"
+        className="w-full h-[28rem] object-cover object-center mb-2"
+      />
       <div className="max-w-8xl mx-auto px-8 py-4">
-        <h2 className="text-2xl font-bold text-center mb-4 -teal-800">
+        <h2 className="text-2xl font-bold text-center text-teal-800">
           Browse Our Playing Cards Collection
         </h2>
 
         <form
           action={tryFilteredProduct}
-          className="flex flex-col sm:flex-row gap-2 mb-4 "
+          className="flex flex-col sm:flex-row gap-2 mb-2 "
         >
           <input
             type="text"
@@ -67,12 +72,6 @@ export default function Products() {
             Search
           </button>
         </form>
-
-        <img
-          src="https://images.unsplash.com/photo-1604345250885-11f528eec3ff?q=80&w=1219&auto=format&fit=crop"
-          alt="Playing Cards Banner"
-          className="w-full h-52 object-cover rounded-lg mb-6"
-        />
 
         <section className="flex flex-col lg:flex-row gap-4">
           <Roster
