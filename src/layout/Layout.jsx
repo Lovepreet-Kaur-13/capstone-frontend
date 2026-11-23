@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="min-h-screen bg-slate-100">
         <Outlet />
       </main>
     </>
