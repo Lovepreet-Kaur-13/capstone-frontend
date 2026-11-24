@@ -34,7 +34,7 @@ export default function Navbar() {
         <img
           src={logo}
           alt="DeckMart Logo"
-          className="h-12 w-auto rounded-lg object-contain"
+          className="h-12 w-auto rounded-lg object-contain mr-2"
         />
 
         <NavLink to="/">
